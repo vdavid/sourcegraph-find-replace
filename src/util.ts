@@ -1,6 +1,6 @@
 import sourcegraph from 'sourcegraph'
 
-export async function getCurrentUser(): Promise<{username: string, email: string}> {
+export async function getCurrentUser(): Promise<{ username: string; email: string }> {
     const response = await sourcegraph.commands.executeCommand(
         'queryGraphQL',
         `{
@@ -9,6 +9,5 @@ export async function getCurrentUser(): Promise<{username: string, email: string
         }
       }`
     )
-    console.log('A response is going to the extension', response.data)
     return response?.data?.currentUser
 }

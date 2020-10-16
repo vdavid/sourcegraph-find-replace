@@ -7,13 +7,16 @@ import { getCurrentUser } from './util'
 // TODO(sqs) SECURITY(sqs): sanitize for real
 const escapedMarkdownCode = (text: string): string => '`' + text.replace(/`/g, '\\`') + '`'
 
+// TODO: make this file filter configurable.
+// The filter is applied on all files of each matching repo (confirm - is that correct?)
+const fileFilter = (path: string): boolean => path.endsWith('.yaml') || path.endsWith('.yml') || path.endsWith('.md')
+
 export const registerFindReplaceAction = (): Subscription => {
     const subscription = new Subscription()
     subscription.add(
         sourcegraph.commands.registerCommand('start-find-replace', async () => {
-
             // To create campaigns, a namespace is used, which can be the current user's username.
-            const currentUser = await getCurrentUser();
+            const currentUser = await getCurrentUser()
             const namespaceName = currentUser?.username
             console.log('currentUser', currentUser)
 
@@ -47,8 +50,7 @@ export const registerFindReplaceAction = (): Subscription => {
                         description,
                         steps: [
                             {
-                                fileFilter: path =>
-                                    path.endsWith('.yaml') || path.endsWith('.yml') || path.endsWith('.md'), // TODO(sqs)
+                                fileFilter,
                                 editFile: (path, text) => {
                                     if (!text.includes(match)) {
                                         return null
@@ -72,7 +74,7 @@ export const registerFindReplaceAction = (): Subscription => {
                                 message: description,
                                 author: {
                                     name: currentUser.username,
-                                    email: currentUser.email
+                                    email: currentUser.email,
                                 },
                             },
                             published: false,
