@@ -60,6 +60,7 @@ export const registerFindReplaceAction = (): Subscription => {
                         description,
                         steps: [
                             {
+                                // fileFilter is a required property, but we want it to be a noop.
                                 fileFilter: () => true,
                                 editFile: (path, text) => {
                                     if (!text.includes(findString)) {
@@ -89,7 +90,7 @@ export const registerFindReplaceAction = (): Subscription => {
                     })
             )
             sourcegraph.app.activeWindow!.showNotification(
-                `[**Find-replace changes**](${applyURL}) are ready to preview and apply.<br/><br/><small>${diffStat.changed} changes made.</small>`,
+                `[**Find-replace changes**](${applyURL}) are ready to preview and apply.\n\n<small>${diffStat.changed} changes made.</small>`,
                 sourcegraph.NotificationType.Success
             )
         })
