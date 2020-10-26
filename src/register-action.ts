@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs'
 import sourcegraph from 'sourcegraph'
 import { evaluateAndCreateCampaignSpec } from '@sourcegraph/campaigns-client'
+import '@sourcegraph/campaigns-client/src/types/sourcegraph.graphql'
 import slugify from 'slugify'
 import { getCurrentUser } from './util'
 import { editFile } from './edit-file'
